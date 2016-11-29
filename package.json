@@ -1,0 +1,19 @@
+{
+  "name": "cardboard-list",
+  "version": "0.0.0",
+  "description": "Adds feature listing support to cardboard",
+  "main": "index.js",
+  "scripts": {
+    "pretest": "eslint index.js lib test/*.js",
+    "test": "mocha test/*.test.js"
+  },
+  "keywords": [
+    "cardboard"
+  ],
+  "author": "Mapbox",
+  "license": "ISC",
+  "devDependencies": {
+    "eslint": "^3.11.1",
+    "mocha": "^3.2.0"
+  }
+}
