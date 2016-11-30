@@ -1,68 +1,50 @@
+var Dyno = require('dyno');
 var stream = require('stream');
 
-var createListParams = require('./create-list-params');
+var createListParams = require('./lib/create-list-params');
 
-module.exports = function(cardboard, listTable) {
-    
-    cardboard.list = function(dataset, pageOptions, callback) {
+module.exports = function(config) {
+
+    if (typeof config.listTable !== 'string' || config.listTable.length === 0) throw new Error('"listTable" must be a string');
+    if (!config.dyno && !config.region) throw new Error('No region set');
+    if (!config.dyno) config.dyno = Dyno({table: config.listTable, region: config.region, endpoint: config.endpoint});
+ 
+    var cardboardList = {};
+
+    cardboardList.listFeatureIds = function(dataset, pageOptions, callback) {
 
         if (typeof pageOptions === 'function') {
             callback = pageOptions;
             pageOptions = {};
         }
 
-        var params = createListParams(dataset, pageOptions, listTable);
+        var params = createListParams(dataset, pageOptions);
 
-        cardboard.dyno.query(params, function(err, data) {
+        config.dyno.query(params, function(err, data) {
             if (err) return callback(err);
-            var ids = data.Items.map(function(item) { return item.index.replace(/^feature_id!/, ''); });
-            cardboard.utils.resolveFeaturesByIds(dataset, ids, function(err, features) {
-                if (err) return callback(err);
-                callback(null, features);
-            });
+            var ids = data.Items.map(function(item) { return item.index.replace('feature_id!', ''); });
+            callback(null, ids);
         });
     }; 
 
-    cardboard.listStream = function(dataset, pageOptions) {
-        var params = createListParams(dataset, pageOptions, listTable);
+    cardboardList.listFeatureIdsStream = function(dataset, pageOptions) {
+        var params = createListParams(dataset, pageOptions);
         var resolver = new stream.Transform({ objectMode: true, highWaterMark: 50 });
 
-        resolver.items = [];
-
-        resolver._resolve = function(callback) {
-            cardboard.utils.resolveFeaturesByIds(dataset, resolver.items, function(err, collection) {
-                if (err) return callback(err);
-                resolver.items = [];
-
-                collection.features.forEach(function(feature) {
-                    resolver.push(feature);
-                });
-
-                callback();
-            });
-        };
-
         resolver._transform = function(item, enc, callback) {
-            resolver.items.push(cardboard.utils.idFromRecord(item));
-            if (resolver.items.length < 25) return callback();
-
-            resolver._resolve(callback);
+            resolver.push(item.index.replace('feature_id!', ''));
+            callback();
         };
 
-        resolver._flush = function(callback) {
-            if (!resolver.items.length) return callback();
-
-            resolver._resolve(callback);
-        };
-
-        return cardboard.dyno.queryStream(params)
+        return config.dyno.queryStream(params)
             .on('error', function(err) {
                 resolver.emit('error', err);
             })
           .pipe(resolver); 
     };
 
-    return cardboard;
+    cardboardList.streamHandler = require('./lib/stream-handler')(config);
+
+    return cardboardList;
 }
 
-module.exports.streamHandler = require('./lib/stream-handler');
