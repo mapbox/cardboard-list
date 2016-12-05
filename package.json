@@ -24,6 +24,7 @@
   },
   "dependencies": {
     "cardboard": "^2.2.0",
+    "dyno": "^1.2.1",
     "eslint": "^3.11.1",
     "tape": "^4.6.3"
   },
