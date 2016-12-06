@@ -23,7 +23,7 @@
     "test": "test"
   },
   "dependencies": {
-    "cardboard": "^2.2.0",
+    "cardboard": "https://github.com/mapbox/cardboard/tarball/0a0263a8e56702d06bc51497e2b89adbc495c642",
     "dyno": "1.2.1",
     "eslint": "^3.11.1",
     "tape": "^4.6.3"
