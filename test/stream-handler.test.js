@@ -33,6 +33,7 @@ var countries = require('./data/countries.json').features.map(function(feature) 
 var countryRecords = countries.map(function(item) { return mainToListRecord(item, 'default'); });
 
 listTable.test('check adding on an empty db works', function(assert) {
+
     var cardboardList = CardboardList(listConfig);
     var records = toEvent('INSERT', states);
     cardboardList.streamHandler(records, function(err) {
