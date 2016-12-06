@@ -40,8 +40,8 @@ listTable.test('list', [nullIslandListRecord], function(t) {
 });
 
 var states = require('./data/states.json').features.map(function(state) {
-   state.id = state.properties.name.toLowerCase().replace(/ /g, '-');
-   return mainToListRecord(utils.toDatabaseRecord(state, 'default'));     
+    state.id = state.properties.name.toLowerCase().replace(/ /g, '-');
+    return mainToListRecord(utils.toDatabaseRecord(state, 'default'));     
 });
 
 listTable.test('list stream', states, function(t) {

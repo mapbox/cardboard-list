@@ -22,7 +22,7 @@ module.exports = function(config) {
 
         config.dyno.query(params, function(err, data) {
             if (err) return callback(err);
-            var ids = data.Items.map(function(item) { return item.index.replace('feature!', ''); });
+            var ids = data.Items.map(function(item) { return item.key.replace('feature!', ''); });
             callback(null, ids);
         });
     }; 
@@ -32,7 +32,7 @@ module.exports = function(config) {
         var resolver = new stream.Transform({ objectMode: true, highWaterMark: 50 });
 
         resolver._transform = function(item, enc, callback) {
-            resolver.push(item.index.replace('feature!', ''));
+            resolver.push(item.key.replace('feature!', ''));
             callback();
         };
 
