@@ -23,10 +23,9 @@
     "test": "test"
   },
   "dependencies": {
-    "cardboard": "https://github.com/mapbox/cardboard/tarball/0a0263a8e56702d06bc51497e2b89adbc495c642",
-    "dyno": "1.2.1",
-    "stream": "0.0.2",
-    "tape": "^4.6.3"
+    "cardboard": "^3.0.0",
+    "dyno": "1.4.0",
+    "stream": "0.0.2"
   },
   "repository": {
     "type": "git",
