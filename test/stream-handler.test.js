@@ -1,7 +1,7 @@
 var Dyno = require('dyno');
 var dynamodbTest = require('dynamodb-test');
 var tape = require('tape');
-var utils = require('cardboard/lib/utils')();
+var utils = require('cardboard/lib/utils');
 
 var listTableSpec = require('../lib/list-table.json');
 var listTable = dynamodbTest(tape, 'cardboard-list', listTableSpec);
@@ -79,6 +79,7 @@ listTable.test('check update on a filled db works', stateRecords, function(asser
 listTable.test('check removing on an filled db works', stateRecords, function(assert) {
     var cardboardList = CardboardList(listConfig);
     var records = toEvent('REMOVE', states);
+
     cardboardList.streamHandler(records, function(err) {
         if (err) return assert.ifError(err, 'ran stream handler without error');
         cardboardList.listFeatureIds('default', function(err, ids) {
@@ -106,12 +107,14 @@ listTable.test('check removing doesnt removing everything', stateRecords.concat(
 listTable.close();
 
 function toEvent(action, records) {
-    return records.map(function(mainRecord) {
-        var serialized = JSON.parse(Dyno.serialize(mainRecord));
-        var record = { eventName: action };
-        record.dynamodb = {};
-        record.dynamodb.OldImage = action !== 'INSERT' ? serialized : undefined;
-        record.dynamodb.NewImage = action !== 'REMOVE' ? serialized : undefined;
-        return record;
-    });
+    return {
+        records: records.map(function(mainRecord) {
+            var serialized = JSON.parse(Dyno.serialize(mainRecord));
+            var record = { eventName: action };
+            record.dynamodb = {};
+            record.dynamodb.OldImage = action !== 'INSERT' ? serialized : undefined;
+            record.dynamodb.NewImage = action !== 'REMOVE' ? serialized : undefined;
+            return record;
+        })
+    };
 }

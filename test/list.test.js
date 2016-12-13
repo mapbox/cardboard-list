@@ -1,6 +1,6 @@
 var dynamodbTest = require('dynamodb-test');
 var tape = require('tape');
-var utils = require('cardboard/lib/utils')();
+var utils = require('cardboard/lib/utils');
 
 var listTableSpec = require('../lib/list-table.json');
 var listTable = dynamodbTest(tape, 'cardboard-list', listTableSpec);
