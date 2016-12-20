@@ -1,6 +1,6 @@
 {
   "name": "cardboard-list",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "Adds feature listing support to cardboard",
   "main": "index.js",
   "scripts": {
