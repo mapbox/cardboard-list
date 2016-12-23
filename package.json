@@ -23,7 +23,7 @@
     "test": "test"
   },
   "dependencies": {
-    "cardboard": "^3.0.0",
+    "@mapbox/cardboard": "^3.0.0",
     "dyno": "1.4.0",
     "stream": "0.0.2"
   },
