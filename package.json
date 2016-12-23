@@ -1,6 +1,6 @@
 {
   "name": "@mapbox/cardboard-list",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Adds feature listing support to cardboard",
   "main": "index.js",
   "scripts": {
