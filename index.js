@@ -5,7 +5,7 @@ var createListParams = require('./lib/create-list-params');
 
 module.exports = function(config) {
 
-    if (typeof config.listTable !== 'string' || config.listTable.length === 0) throw new Error('"listTable" must be a string');
+    if (!config.dyno && (typeof config.listTable !== 'string' || config.listTable.length === 0)) throw new Error('"listTable" must be a string');
     if (!config.dyno && !config.region) throw new Error('No region set');
     if (!config.dyno) config.dyno = Dyno({table: config.listTable, region: config.region, endpoint: config.endpoint});
  
