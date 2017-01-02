@@ -11,6 +11,12 @@ module.exports = function(config) {
  
     var cardboardList = {};
 
+    cardboardList.createTable = function(callback) {
+        var tableSchema = require('./lib/list-table.json');
+        tableSchema.TableName = config.listTable;
+        config.dyno.createTable(tableSchema, callback);
+    };
+
     cardboardList.listFeatureIds = function(dataset, pageOptions, callback) {
 
         if (typeof pageOptions === 'function') {
