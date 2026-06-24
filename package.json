@@ -1,6 +1,6 @@
 {
   "name": "@mapbox/cardboard-list",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Adds feature listing support to cardboard",
   "main": "index.js",
   "scripts": {
@@ -34,5 +34,8 @@
   "bugs": {
     "url": "https://github.com/mapbox/cardboard-list/issues"
   },
-  "homepage": "https://github.com/mapbox/cardboard-list#readme"
+  "homepage": "https://github.com/mapbox/cardboard-list#readme",
+  "publishConfig": {
+    "access": "public"
+  }
 }
